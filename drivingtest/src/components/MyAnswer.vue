@@ -82,12 +82,12 @@
 </template>
 
 <script>
-import Tx from "../img/tx.png";
+
 import {mapState} from 'vuex';
 export default {
   data() {
     return {
-      tx: Tx,
+      
       t1: "驾考模拟",
       p1: "第01号考台",
       t2: "考生信息",
@@ -97,7 +97,6 @@ export default {
   computed: {
     ...mapState([
       'tks',
-      
     ])
   },
 };
