@@ -11,6 +11,7 @@ export default new Vuex.Store({
       cuoti:[],
       // 判断是否及格
       isJige:true,
+      // 总成绩记录
       zongcj:'',
   },
   mutations: {
