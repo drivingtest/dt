@@ -17,7 +17,7 @@
                                 <label class="mr-3">姓</label> <label >名：</label> <span>学员</span>
                                 </p>
                                 <p><label for="">考试类型：</label> <span>小车类</span></p>
-                                <p><label for="">考试科目：</label> <span>{{km}}</span></p>
+                                <p><label for="">考试科目：</label> <span>科目一</span></p>
                         </div>
                     </div>
                     <div class="card ">
@@ -31,18 +31,28 @@
                     <div class="card kstm pos">
                         <div class="card-body ">
                             <h4 class="card-title tit">考试题目</h4>
-                            <p class="mb-3 ">(判断题)1、倒车过程中要缓慢行驶，注意观察车辆两侧和后方的情况，随时做好停车准备。</p>
-                            <div class="option ">
+                            <h1 >{{  singles[now].title }}</h1>
+                            <p class="mb-3 "     v-for="(a,index) in singles[now].ans"  :key="index">
+                        {{String(Object.keys(a))}} : {{ String(Object.values(a)) }} 
+                    </p>
+                            <!-- <div class="option ">
                                 <p>A：正确</p>
                                 <p>B：错误</p>
-                                </div>
+                                </div> -->
                               <div class="tm-answer">
                     <div class="float-left sec-aswer">您的选项是：</div>
-                    <div class="float-right aswer"><span class="float-left">请选择：</span>
-                    <span class="pr-3"><button type="button" class="btn btn-outline-dark btn-sm ">A</button></span>
-                    <span><button type="button" class="btn btn-outline-dark btn-sm ">B</button></span>
+                    <div class="float-right aswer"><span class="float-left">请选择:</span>
+                    <span class="pr-3"><button type="button" class="btn btn-outline-dark btn-sm "  
+                    id="btn2"
+                    @click="next"
+                      >A</button></span>
+                    <span><button type="button" 
+                     class="btn btn-outline-dark btn-sm "
+                      id="btn2"
+                      @click="next">B</button></span>
                     </div>
                 </div>
+
                         </div>
                     </div>
                     <div class="row">
@@ -60,23 +70,23 @@
                             <span class="pr-3 "><button type="button" class="btn btn-outline-success  ">下一题</button></span>
                             <span class="pr-3 "><button type="button" class="btn btn-outline-warning  ">交卷</button></span>
                         </div>
-                    </div>
-
-                      
+                    </div>      
                 </div>
+
                 <div class="col-lg-3">
                       <div class="card">
                         <div class="card-body">
                           <h4 class="card-title tit">答题信息</h4>
-                        <li data-order="0" class="lis"><p>1</p></li>
-                        <li data-order="0" class="lis"><p>1</p></li>
-                        <li data-order="0" class="lis"><p>1</p></li>
-                        <li data-order="0" class="lis"><p>1</p></li>
-                        <li data-order="0" class="lis"><p>1</p></li>
-                        <li data-order="0" class="lis"><p>1</p></li>
+                        <li v-if="isScore" data-order="0" class="lis"><p>{{total}}</p></li>
+                        <li data-order="0" class="lis"><p>2</p></li>
+                        <li data-order="0" class="lis"><p>3</p></li>
+                        <li data-order="0" class="lis"><p>4</p></li>
+                        <li data-order="0" class="lis"><p>5</p></li>
+                        <li data-order="0" class="lis"><p>6</p></li>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
 </template>
@@ -87,13 +97,113 @@ import {mapState} from 'vuex';
 export default {
   data() {
     return {
-      
       t1: "驾考模拟",
       p1: "第01号考台",
       t2: "考生信息",
+
+      results: new Map(),
+      choose: [],
+      finished: false,
+      isScore: false,
+      total: 0,
+      now: 0,
+      title: "计算属性和样式",
+      singles: [
+        {
+          title: "最长的河?",
+          ans: [
+            { A: "尼罗河" },
+            { B: "亚马逊河" },
+          ],
+          right: "B",
+        },
+        {
+          title: "市值最高的公司?",
+          ans: [
+            { A: "中国移动" },
+            { B: "阿里巴巴" },
+            { C: "可口可乐" },
+            { D: "苹果" },
+          ],
+          right: "D",
+        },
+        {
+          title: "最流行的程序设计语言?",
+          ans: [{ A: "java" }, { B: "c" }, { C: "c++" }, { D: "php" }],
+          right: "A",
+        },
+      ],
     };
   },
-  props: ["km"],
+  methods: {
+    next(){
+    //记录当前题的答案
+      this.results.set(this.now, this.choose);
+      console.log(this.results);
+      this.now++;
+      //已做过的题不清空选择
+      if (this.results.get(this.now)) {
+        this.choose = this.results.get(this.now);
+      } else {
+        this.choose = [];
+      }
+
+      if (this.now === 5) {
+        this.finished = true;
+      }
+    },
+    // up(isEnd) {
+    //   if (this.now === 0) {
+    //     return;
+    //   }
+    //   if (isEnd) {
+    //     this.finished = false;
+    //   }
+    //   this.now--;
+    //   //获得前一题已选择的答案
+    //   this.choose = this.results.get(this.now);
+    // },
+
+    watch: {
+    //监听choose属性值变化
+    choose: function (newval, oldval) {
+      if (newval.length > 0) {
+        $("#btn2").prop("disabled", false);
+      } else {
+        $("#btn2").prop("disabled", true);
+      }
+    },
+    now: function (newval, oldval) {
+      if (newval > 0) {
+        console.log("btn1启用", newval);
+        $("#btn1").prop("disabled", false);
+      } else {
+        $("#btn1").prop("disabled", true);
+      }
+    },
+  },
+  score() {
+      let count = 0;
+      for (let entry of this.results) {
+        if (this.muls[entry[0]].right.length === 1) {
+          if (this.muls[entry[0]].right === entry[1]) {
+            count++;
+          }
+        } else {
+          if (this.muls[entry[0]].right.join("")=== entry[1].sort().join("")){
+            count++;
+          }
+        }
+      }
+      this.total = (count / this.muls.length) * 100;
+      this.total = this.total.toFixed(2);
+      this.isScore = true;
+    },
+  },
+  props: {
+      list:Array
+  },
+        
   computed: {
     ...mapState([
       'tks',
