@@ -1,6 +1,5 @@
 <template>
     <div>
-        
             <div class="row pos mb-3">
                 <div class="col-lg-3 ">
                     <div class="card mb-3">
@@ -31,7 +30,7 @@
                     <div class="card kstm pos">
                         <div class="card-body ">
                             <h4 class="card-title tit">考试题目</h4>
-                            <p class="mb-3 ">{{ths[OneIndex]}}、{{tks[OneIndex].ti}}</p>
+                            <p class="mb-3 ">{{ths[OneIndex].v}}、{{tks[OneIndex].ti}}</p>
                             <div class="option ">
                                 <p v-for="(item, index) in tks[OneIndex].xx" :key="index">{{item}}</p>
                                 </div>
@@ -56,7 +55,7 @@
                         <div class="col p-3">
                             <span class="pr-3 "><button type="button" class="btn btn-outline-primary  " @click="uoTi">上一题</button></span>
                             <span class="pr-3 "><button type="button" class="btn btn-outline-success  " @click="nextTi">下一题</button></span>
-                            <span class="pr-3 "><button type="button" class="btn btn-outline-warning  ">交卷</button></span>
+                            <span class="pr-3 "><button type="button" class="btn btn-outline-warning  " @click="over" >交卷</button></span>
                         </div>
                     </div>
 
@@ -65,16 +64,16 @@
                       <div class="card">
                         <div class="card-body">
                           <h4 class="card-title tit">答题信息</h4>
-                        <li data-order="0" class="lis" v-for="(item, index) in ths" :key="index"><p>{{item}}</p></li>
+                        <li data-order="0" class="lis "  v-for="(item, index) in ths" :key="index" :class='item.class'><p>{{item.v}}</p></li>
                         </div>
                     </div>
-                    <div class="q-detail pos fl" style="display: block; background-color: rgb(255, 253, 230);">
+                    <div class="q-detail pos fl" style="display: block; background-color: rgb(255, 253, 230);" v-if="tks[OneIndex].img!=''">
             <div class="tit" style="background-color: rgb(255, 253, 230);">图片信息</div>
             <img class="img-block" :src="tks[OneIndex].img" alt="">
         </div>
                 </div>
             </div>
-            
+
         </div>
 </template>
 
@@ -89,10 +88,26 @@ export default {
       t2: "考生信息",
       // 你选择的是
       xz:'',
+      // 错题
+      cuo:'bg-danger text-light',
+      // 对题
+      dui:'bg-success text-light',
       // 题号
-      ths:[1,2,3,4,5,6,7,8,9,10],
+      ths:[
+        {'v':1,'class':''},
+        {'v':2,'class':''},
+        {'v':3,'class':''},
+        {'v':4,'class':''},
+        {'v':5,'class':''},
+        {'v':6,'class':''},
+        {'v':7,'class':''},
+        {'v':8,'class':''},
+        {'v':9,'class':''},
+        {'v':10,'class':''},
+      ],
       // 选项样式
       xxClass:'btn-success',
+
       //题库
       tks:[
       {
@@ -110,7 +125,7 @@ export default {
       {
         'ti':'如图所示，A车在此处停车是可以的。',
         'xx':['A：正确','B：错误'],
-         'xx2':[
+          'xx2':[
           {'name':'A','class':'','xuangS':true,},
           {'name':'B','class':'','xuangS':true,}
           ],
@@ -222,12 +237,13 @@ export default {
         'tis':'单选题,请在备选答案中选择你认为正确的答案！'
       }
     ],
+    
     OneIndex:0,
     };
   },
 
   props: ["km"],
-
+ 
   methods: {
     // 上一题
     uoTi:function(){
@@ -245,8 +261,9 @@ export default {
        this.OneIndex=this.OneIndex+1;
      }
     },
-    // 选中效果
+    // 选中答案后发生的事
     diXx:function(i){
+      // 显示选中效果
       this.tks[this.OneIndex].xx2[i].xuangS=!this.tks[this.OneIndex].xx2[i].xuangS
       if(this.tks[this.OneIndex].xx2[i].xuangS){
         this.tks[this.OneIndex].xx2[i].class='';
@@ -255,14 +272,53 @@ export default {
         this.tks[this.OneIndex].xx2[i].class=this.xxClass;
         this.tks[this.OneIndex].xs=this.tks[this.OneIndex].xx2[i].name;
       }
+
+
       
+    //  显示对错
+    if(i==this.tks[this.OneIndex].daan){
+      this.ths[this.OneIndex].class=this.dui;
+      this.$store.state.jilu.push(10);
+      // 跳下一题效果
+      if(this.OneIndex == 9){
+       alert('已经是最后一题了');
+       this.ths[this.OneIndex].class=this.dui;
+     }else{
+       this.OneIndex=this.OneIndex+1;
+     }
+    }else{
+      this.ths[this.OneIndex].class=this.cuo;
+      this.$store.state.cuoti.push(this.tks[this.OneIndex]);
+      this.$store.state.jilu.push(0);
+      if(this.OneIndex == 9){
+       alert('已经是最后一题了');
+       this.ths[this.OneIndex].class=this.cuo;
+     }else{
+       this.OneIndex=this.OneIndex+1;
+     }
     }
+    },
+    // 答题结束
+    over:function(){
+      this.$router.push('/over');
+      var zcj=0;
+      for(let i=0;i<10;i++){
+        console.log(this.$store.state.jilu[i]);
+        zcj+=this.$store.state.jilu[i];
+      }
+      this.$store.state.zongcj=zcj;
+      if(zcj<80){
+        this.$store.state.isJige=false;
+      }else{
+        this.$store.state.isJige=true;
+      }
+    },
   },
 };
 </script>
 
 <style lang="css">
-.pos {
+ .pos {
   position: relative;
 }
 
