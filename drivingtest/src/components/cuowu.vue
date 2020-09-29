@@ -60,14 +60,13 @@
                               <div class="card  pos">
                         <div class="card-body ">
                             <h4 class="card-title tit">提示信息</h4>
-                            <span class="tsxxt">单选题,请在备选答案中选择你认为正确的答案！</span>
+                            <span class="tsxxt">{{tks[OneIndex].tis}}</span>
                     </div>
                 </div>
                         </div>
                         <div class="col p-3">
-                            
-                            <span class="pr-3 "><button type="button" class="btn btn-outline-primary  ">上一题</button></span>
-                            <span class="pr-3 "><button type="button" class="btn btn-outline-success  ">下一题</button></span>
+                            <span class="pr-3 "><button type="button" class="btn btn-outline-primary  " @click="uoTi">上一题</button></span>
+                            <span class="pr-3 "><button type="button" class="btn btn-outline-success  " @click="nextTi">下一题</button></span>
                             <span class="pr-3 "><button type="button" class="btn btn-outline-warning  ">交卷</button></span>
                         </div>
                     </div>      
@@ -85,15 +84,19 @@
                         <li data-order="0" class="lis"><p>6</p></li>
                         </div>
                     </div>
+                    <div class="q-detail pos fl" style="display: block; background-color: rgb(255, 253, 230);">
+            <div class="tit" style="background-color: rgb(255, 253, 230);">图片信息</div>
+            <img class="img-block" :src="tks[OneIndex].img" alt="">
+        </div>
                 </div>
 
             </div>
+            
         </div>
 </template>
 
 <script>
 
-import {mapState} from 'vuex';
 export default {
   data() {
     return {
@@ -270,7 +273,6 @@ export default {
   box-sizing: border-box;
 }
 
-
   .lis {
   width: 40px;
   height: 40PX;
@@ -282,5 +284,34 @@ export default {
   float: left;
   box-sizing: border-box;
   cursor: pointer;
+}
+
+/* 图片信息 */
+    
+    .tit {
+  position: absolute;
+  top: -17px;
+  left: 87px;
+  background: #fff;
+  background-color: rgb(255, 255, 255);
+  padding: 5px;
+  font-size: 18px;
+  color: #333;
+  line-height: 25px;
+}
+.q-detail {
+    display: none;
+    width: 100%;
+    height: 275px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    margin-top: 20px;
+    padding: 25px 0;
+}
+.q-detail img {
+    width: 250px;
+    height: 200px;
+    display: block;
+    margin: 0 auto;
 }
 </style>

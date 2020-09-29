@@ -5,10 +5,14 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+     // 题库：
+      
   },
   mutations: {
+    
   },
   actions: {
+
   },
   modules: {
   }
