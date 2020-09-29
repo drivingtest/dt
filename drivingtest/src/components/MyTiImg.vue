@@ -2,14 +2,22 @@
     <div>
         <div class="q-detail pos fl" style="display: block; background-color: rgb(255, 253, 230);">
             <div class="tit" style="background-color: rgb(255, 253, 230);">图片信息</div>
-            <img class="img-block" src="https://wos.58cdn.com.cn/XyVuTsRqXyf/question/5eb4d75agw1e28yqfy1imj.jpg" alt="">
+            <img class="img-block" :src="tks[OneIndex].img" alt="">
         </div>
     </div>
 </template>
 
 <script>
+
+import {mapState} from 'vuex';
+
 export default {
-    
+    computed: {
+    ...mapState([
+      'tks',
+      'OneIndex',
+    ])
+  },
 }
 </script>
 
