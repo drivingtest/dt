@@ -22,7 +22,7 @@
                     <div class="card ">
                         <div class="card-body ">
                             <h4 class="card-title tit">剩余时间</h4>
-                            
+                            <Time/>
                         </div>
                     </div>
                 </div>
@@ -30,14 +30,14 @@
                     <div class="card kstm pos">
                         <div class="card-body ">
                             <h4 class="card-title tit">考试题目</h4>
-                            <p class="mb-3 ">{{ths[OneIndex].v}}、{{tks[OneIndex].ti}}</p>
+                            <p class="mb-3 ">{{ths[OneIndex].v}}、{{tks[sjs].ti}}</p>
                             <div class="option ">
-                                <p v-for="(item, index) in tks[OneIndex].xx" :key="index">{{item}}</p>
+                                <p v-for="(item, index) in tks[sjs].xx" :key="index">{{item}}</p>
                                 </div>
                               <div class="tm-answer">
-                    <div class="float-left sec-aswer">您的选项是：{{tks[OneIndex].xs}}</div>
+                    <div class="float-left sec-aswer">您的选项是：{{tks[sjs].xs}}</div>
                     <div class="float-right aswer"><span class="float-left">请选择：</span>
-                    <span class="pr-3" v-for="(item, index) in tks[OneIndex].xx2" :key="index" >
+                    <span class="pr-3" v-for="(item, index) in tks[sjs].xx2" :key="index" >
                       <button type="button" class="btn btn-sm " :class="item.xuangS?'btn-outline-dark':item.class" @click="diXx(index)">{{item.name}}</button></span>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
                               <div class="card  pos">
                         <div class="card-body ">
                             <h4 class="card-title tit">提示信息</h4>
-                            <span class="tsxxt">{{tks[OneIndex].tis}}</span>
+                            <span class="tsxxt">{{tks[sjs].tis}}</span>
                     </div>
                 </div>
                         </div>
@@ -67,9 +67,9 @@
                         <li data-order="0" class="lis "  v-for="(item, index) in ths" :key="index" :class='item.class'><p>{{item.v}}</p></li>
                         </div>
                     </div>
-                    <div class="q-detail pos fl" style="display: block; background-color: rgb(255, 253, 230);" v-if="tks[OneIndex].img!=''">
+                    <div class="q-detail pos fl" style="display: block; background-color: rgb(255, 253, 230);" v-if="tks[sjs].img!=''">
             <div class="tit" style="background-color: rgb(255, 253, 230);">图片信息</div>
-            <img class="img-block" :src="tks[OneIndex].img" alt="">
+            <img class="img-block" :src="tks[sjs].img" alt="">
         </div>
                 </div>
             </div>
@@ -79,7 +79,14 @@
 
 <script>
 
+
+import Time from '@/components/Time'
+
+
 export default {
+  components: {
+    Time,
+  },
   data() {
     return {
        tx:require('../assets/tx.png'),
@@ -93,6 +100,8 @@ export default {
       // 对题
       dui:'bg-success text-light',
       // 题号
+      // 随机题库
+      sjs:Math.round(Math.random()*10),
       ths:[
         {'v':1,'class':''},
         {'v':2,'class':''},
@@ -235,7 +244,151 @@ export default {
         'daan':2,
         'img':'',
         'tis':'单选题,请在备选答案中选择你认为正确的答案！'
-      }
+      },
+      {
+        'ti':'机动车达到国家规定的强制报废标准的不能办理注册登记。',
+        'xx':['A：正确','B：错误',],
+        'xx2':[
+          {'name':'A','class':'','xuangS':true,},
+          {'name':'B','class':'','xuangS':true,},
+          ],
+          'xs':'',
+        'daan':0,
+        'img':'',
+        'tis':' 判断题，请判断对错！'
+      },
+       {
+        'ti':'机动车仪表板上（如图所示）亮，表示驻车制动器操纵杆可能没松到底。',
+        'xx':['A：正确','B：错误',],
+        'xx2':[
+          {'name':'A','class':'','xuangS':true,},
+          {'name':'B','class':'','xuangS':true,},
+          ],
+          'xs':'',
+        'daan':1,
+        'img':require('../assets/js.jpg'),
+        'tis':' 判断题，请判断对错！'
+      },
+      {
+        'ti':'专用车道规定的专用使用时间之外，其他车辆可以进入专用车道行驶。',
+        'xx':['A：正确','B：错误',],
+        'xx2':[
+          {'name':'A','class':'','xuangS':true,},
+          {'name':'B','class':'','xuangS':true,},
+          ],
+          'xs':'',
+        'daan':0,
+        'img':'',
+        'tis':' 判断题，请判断对错！'
+      },
+      {
+        'ti':'这个标志的含义是提醒车辆驾驶人前方路面颠簸或有桥头跳车现象。',
+        'xx':['A：正确','B：错误',],
+        'xx2':[
+          {'name':'A','class':'','xuangS':true,},
+          {'name':'B','class':'','xuangS':true,},
+          ],
+          'xs':'',
+        'daan':0,
+        'img':require('../assets/dp.jpg'),
+        'tis':' 判断题，请判断对错！'
+      },
+      {
+        'ti':'看到这个标志的时候，您应该主动确认您与前车之间的距离',
+        'xx':['A：正确','B：错误',],
+        'xx2':[
+          {'name':'A','class':'','xuangS':true,},
+          {'name':'B','class':'','xuangS':true,},
+          ],
+          'xs':'',
+        'daan':0,
+        'img':require('../assets/1280.jpg'),
+        'tis':' 判断题，请判断对错！'
+      },
+      {
+        'ti':'使用软连接牵引装置时，牵引车与被牵引车之间应当保持多远距离？',
+        'xx':['A：小于0.5米','B：小于4米','C：大于4米小于10米','D：大于10米'],
+        'xx2':[
+          {'name':'A','class':'','xuangS':true,},
+          {'name':'B','class':'','xuangS':true,},
+          {'name':'C','class':'','xuangS':true,},
+          {'name':'D','class':'','xuangS':true,},
+          ],
+          'xs':'',
+        'daan':2,
+        'img':'',
+        'tis':'单选题,请在备选答案中选择你认为正确的答案！'
+      },
+      {
+        'ti':'下面哪个标志表示注意路面不平？',
+        'xx':['A：图①','B：图②','C：图③','D：图④'],
+        'xx2':[
+          {'name':'A','class':'','xuangS':true,},
+          {'name':'B','class':'','xuangS':true,},
+          {'name':'C','class':'','xuangS':true,},
+          {'name':'D','class':'','xuangS':true,},
+          ],
+          'xs':'',
+        'daan':1,
+        'img':require('../assets/17.jpg'),
+        'tis':'单选题,请在备选答案中选择你认为正确的答案！'
+      },
+      {
+        'ti':'如图所示，驾驶机动车遇这种情形时，以下做法正确的是什么？',
+        'xx':['A：鸣笛并继续直行','B：减速并随时准备停车','C：转向道路左侧并继续行驶','D：匀速驶过该区域'],
+        'xx2':[
+          {'name':'A','class':'','xuangS':true,},
+          {'name':'B','class':'','xuangS':true,},
+          {'name':'C','class':'','xuangS':true,},
+          {'name':'D','class':'','xuangS':true,},
+          ],
+          'xs':'',
+        'daan':1,
+        'img':require('../assets/18.jpg'),
+        'tis':'单选题,请在备选答案中选择你认为正确的答案！'
+      },
+      {
+        'ti':'雨天行车，遇撑雨伞和穿雨衣的行人在公路上行走时，应怎样做？',
+        'xx':['A：以正常速度行驶','B：持续鸣喇叭示意其让道','C：加速绕行','D：提前鸣喇叭，并适当降低车速'],
+        'xx2':[
+          {'name':'A','class':'','xuangS':true,},
+          {'name':'B','class':'','xuangS':true,},
+          {'name':'C','class':'','xuangS':true,},
+          {'name':'D','class':'','xuangS':true,},
+          ],
+          'xs':'',
+        'daan':3,
+        'img':'',
+        'tis':'单选题,请在备选答案中选择你认为正确的答案！'
+      },
+      {
+        'ti':'这是什么操纵装置？',
+        'xx':['A：灯光、信号组合开关','B：倒车灯开关','C：刮水器开关','D：危险报警闪光灯开关'],
+        'xx2':[
+          {'name':'A','class':'','xuangS':true,},
+          {'name':'B','class':'','xuangS':true,},
+          {'name':'C','class':'','xuangS':true,},
+          {'name':'D','class':'','xuangS':true,},
+          ],
+          'xs':'',
+        'daan':0,
+        'img':require('../assets/20.jpg'),
+        'tis':'单选题,请在备选答案中选择你认为正确的答案！'
+      },
+      {
+        'ti':'行车中需要借道绕过前方障碍物，但对向来车已接近障碍物时，应怎样做？',
+        'xx':['A：降低速度或停车，让对向来车优先通行','B：加速提前抢过','C：鸣喇叭示意对向车辆让道','D：迅速占用车道，迫使对向来车停车让道'],
+        'xx2':[
+          {'name':'A','class':'','xuangS':true,},
+          {'name':'B','class':'','xuangS':true,},
+          {'name':'C','class':'','xuangS':true,},
+          {'name':'D','class':'','xuangS':true,},
+          ],
+          'xs':'',
+        'daan':0,
+        'img':'',
+        'tis':'单选题,请在备选答案中选择你认为正确的答案！'
+      },
     ],
     
     OneIndex:0,
@@ -250,6 +403,7 @@ export default {
       if(this.OneIndex == 0){
         alert('已经是第一题了！');
       }else{
+        this.sjs=this.sjs-1;
         this.OneIndex=this.OneIndex-1;
       }
     },
@@ -258,25 +412,24 @@ export default {
      if(this.OneIndex == 9){
        alert('已经是最后一题了');
      }else{
+       this.sjs=this.sjs+1;
        this.OneIndex=this.OneIndex+1;
      }
     },
     // 选中答案后发生的事
     diXx:function(i){
       // 显示选中效果
-      this.tks[this.OneIndex].xx2[i].xuangS=!this.tks[this.OneIndex].xx2[i].xuangS
-      if(this.tks[this.OneIndex].xx2[i].xuangS){
-        this.tks[this.OneIndex].xx2[i].class='';
-        this.tks[this.OneIndex].xs='';
+      this.tks[this.sjs].xx2[i].xuangS=!this.tks[this.sjs].xx2[i].xuangS
+      if(this.tks[this.sjs].xx2[i].xuangS){
+        this.tks[this.sjs].xx2[i].class='';
+        this.tks[this.sjs].xs='';
       }else{
-        this.tks[this.OneIndex].xx2[i].class=this.xxClass;
-        this.tks[this.OneIndex].xs=this.tks[this.OneIndex].xx2[i].name;
+        this.tks[this.sjs].xx2[i].class=this.xxClass;
+        this.tks[this.sjs].xs=this.tks[this.sjs].xx2[i].name;
       }
-
-
       
     //  显示对错
-    if(i==this.tks[this.OneIndex].daan){
+    if(i==this.tks[this.sjs].daan){
       this.ths[this.OneIndex].class=this.dui;
       this.$store.state.jilu.push(10);
       // 跳下一题效果
@@ -284,16 +437,18 @@ export default {
        alert('已经是最后一题了');
        this.ths[this.OneIndex].class=this.dui;
      }else{
+       this.sjs=this.sjs+1;
        this.OneIndex=this.OneIndex+1;
      }
     }else{
       this.ths[this.OneIndex].class=this.cuo;
-      this.$store.state.cuoti.push(this.tks[this.OneIndex]);
+      this.$store.state.cuoti.push(this.tks[this.sjs]);
       this.$store.state.jilu.push(0);
       if(this.OneIndex == 9){
        alert('已经是最后一题了');
        this.ths[this.OneIndex].class=this.cuo;
      }else{
+       this.sjs=this.sjs+1;
        this.OneIndex=this.OneIndex+1;
      }
     }

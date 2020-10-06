@@ -13,6 +13,7 @@ export default new Vuex.Store({
       isJige:true,
       // 总成绩记录
       zongcj:'',
+      
   },
   mutations: {
     
